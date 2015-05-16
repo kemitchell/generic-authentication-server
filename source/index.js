@@ -41,9 +41,17 @@ module.exports = function(level) {
                   JSON.stringify({password: digest}),
                   function(error) {
                     if (error) {
-                      callback(OK, [error.message]);
+                      callback(OK, {
+                        action: action,
+                        name: object.name,
+                        result: [error.message]
+                      });
                     } else {
-                      callback(OK, [OK, true]);
+                      callback(OK, {
+                        action: action,
+                        name: object.name,
+                        result: [OK, true]
+                      });
                     }
                   }
                 );
@@ -52,16 +60,28 @@ module.exports = function(level) {
           } else if (action === 'authenticate') {
             level.get(object.name, function(error, data) {
               if (error) {
-                callback(OK, [error.message]);
+                callback(OK, {
+                  action: object.action,
+                  name: action.name,
+                  result: [error.message]
+                });
               } else {
                 password.check(
                   object.password,
                   JSON.parse(data).password,
                   function(error, match) {
                     if (error) {
-                      callback(OK, [error.message]);
+                      callback(OK, {
+                        action: object.action,
+                        name: object.name,
+                        result: [error.message]
+                      });
                     } else {
-                      callback(OK, [OK, match]);
+                      callback(OK, {
+                        action: object.action,
+                        name: object.name,
+                        result: [OK, match]
+                      });
                     }
                   }
                 );

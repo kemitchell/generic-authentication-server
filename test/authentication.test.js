@@ -9,26 +9,14 @@ withTestServer(function(server, callback) {
   tap.test('authentication', function(test) {
     test.plan(5);
     var inputs = [
-      {
-        action: 'update',
-        name: 'kyle',
-        password: 'correctpassword'
-      },
-      {
-        action: 'authenticate',
-        name: 'kyle',
-        password: 'correctpassword'
-      },
-      {
-        action: 'authenticate',
-        name: 'kyle',
-        password: 'incorrectpassword'
-      }
+      {action: 'update', name: 'kyle', password: 'correct'},
+      {action: 'authenticate', name: 'kyle', password: 'correct'},
+      {action: 'authenticate', name: 'kyle', password: 'incorrect'}
     ];
     var expectedOutputs = [
-      [null, true],
-      [null, true],
-      [null, false]
+      {action: 'update', name: 'kyle', result: [null, true]},
+      {action: 'authenticate', name: 'kyle', result: [null, true]},
+      {action: 'authenticate', name: 'kyle', result: [null, false]}
     ];
     http.request({
       port: server.address().port,
